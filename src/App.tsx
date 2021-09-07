@@ -1,38 +1,36 @@
-import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import * as React from 'react';
+import { Container, Box, Heading } from '@chakra-ui/react';
+import { ColorModeSwitcher } from './ColorModeSwitcher';
+import InviteList from './components/InviteList';
+import AddInviteeForm from './components/AddInviteeForm';
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+export interface IState {
+  people: {
+    name: string;
+    age: number;
+    url: string;
+    note?: string;
+  }[];
+}
+
+export const App = () => {
+  const [invitees, setInvitees] = React.useState<IState['people']>([
+    {
+      name: 'John Doe',
+      age: 32,
+      url: 'https://media.istockphoto.com/photos/portrait-of-smiling-handsome-man-in-blue-tshirt-standing-with-crossed-picture-id1045886560?k=6&m=1045886560&s=612x612&w=0&h=hXrxai1QKrfdqWdORI4TZ-M0ceCVakt4o6532vHaS3I=',
+      note: 'I like this person, he is my friend',
+    },
+  ]);
+
+  return (
+    <Container maxW='800px' pt={4}>
+      <Box d='flex' mb={4}>
+        <Heading flex={1}>My Party List</Heading>
+        <ColorModeSwitcher />
+      </Box>
+      <AddInviteeForm invitees={invitees} setInvitees={setInvitees} />
+      <InviteList people={invitees} />
+    </Container>
+  );
+};
